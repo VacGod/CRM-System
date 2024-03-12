@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hei</title>
+    <title>CRM system</title>
 </head>
 <body>
 <?php
 // Database connection
 $servername = "localhost";
-$username = "brukernavn";
-$password = "passord";
+$username = "root"; 
+$password = ""; 
 $dbname = "crmv4";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -19,9 +19,9 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Funksjon for å hente kunder og deres kontaktpersoner
+// Function to get customers and their contacts
 function getCustomersAndContacts($conn) {
-    $sql = "SELECT kunde.*, GROUP_CONCAT(kontaktperson.fornavn, ' ', kontaktperson.etternavn) AS kontaktpersoner 
+    $sql = "SELECT kunde.kundeid, kunde.navn, kunde.telefon, kunde.epost, GROUP_CONCAT(kontaktperson.fornavn, ' ', kontaktperson.etternavn) AS kontaktpersoner 
             FROM kunde 
             LEFT JOIN kontaktperson ON kunde.kundeid = kontaktperson.kunde_id 
             GROUP BY kunde.kundeid";
@@ -37,13 +37,46 @@ function getCustomersAndContacts($conn) {
     return $customers;
 }
 
-// Henter alle kunder og deres kontaktpersoner fra databasen
+// Function to create a new customer
+function createCustomer($conn, $navn, $telefon, $epost) {
+    $sql = "INSERT INTO kunde (navn, telefon, epost) VALUES ('$navn', '$telefon', '$epost')";
+    if ($conn->query($sql) === TRUE) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// Function to update customer details
+function updateCustomer($conn, $kundeid, $navn, $telefon, $epost) {
+    $sql = "UPDATE kunde SET navn='$navn', telefon='$telefon', epost='$epost' WHERE kundeid=$kundeid";
+    if ($conn->query($sql) === TRUE) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// Function to delete a customer
+function deleteCustomer($conn, $kundeid) {
+    $sql = "DELETE FROM kunde WHERE kundeid=$kundeid";
+    if ($conn->query($sql) === TRUE) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// Get all customers and their contacts from the database
 $customers = getCustomersAndContacts($conn);
 
-// Lukk databaseforbindelsen
+// Close the database connection
 $conn->close();
 ?>
-<h2>Kunder og Kontaktpersoner</h2>
+
+
+
+    <h2>Kunder og Kontaktpersoner</h2>
     <table border="1">
         <tr>
             <th>Kunde ID</th>
@@ -63,7 +96,18 @@ $conn->close();
         <?php endforeach; ?>
     </table>
 
+    <h2>Legg til ny kunde</h2>
+    <form action="add_customer.php" method="POST">
+        <label for="navn">Navn:</label><br>
+        <input type="text" id="navn" name="navn"><br>
+        <label for="telefon">Telefon:</label><br>
+        <input type="text" id="telefon" name="telefon"><br>
+        <label for="epost">E-post:</label><br>
+        <input type="text" id="epost" name="epost"><br><br>
+        <input type="submit" value="Legg til kunde">
+    </form>
+
+    <!-- Additional forms for updating and deleting customers can be added here -->
 
 
-</body>
 </html>
