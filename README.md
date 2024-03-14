@@ -2,11 +2,11 @@
  
 Dette er en oppgave om CRM 
 
-Georg – ansvar for PHP greiene, lage repo greie for GitHub
+Georg – Ansvar for PHP , lage REPO for CRM i GitHub og lage database med SQL kode
 
-Emma – kravspesifikasjon, litt programmering
+Emma – Kravspesifikasjon, litt programmering
 
 Nikita – ER-modell over database, oversikt over arbeidsfordeling
 
-Liam – litt programmering, fremdriftsplan
+Liam – Detaljert fremdriftsplan
 
