@@ -1,44 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="no">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRM system</title>
+    <title>CRM-system</title>
 </head>
 <body>
 <?php
-// Database connection
+// Database tilkobling
 $servername = "localhost";
 $username = "root"; 
 $password = ""; 
-$dbname = "crmv4";
+$dbname = "crmv5"; 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
+// Sjekk tilkoblingen
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    die("Tilkobling mislyktes: " . $conn->connect_error);
 }
 
-// Function to get customers and their contacts
+// Funksjon for å hente kunder og deres kontakter
 function getCustomersAndContacts($conn) {
-    $sql = "SELECT kunde.kundeid, kunde.navn, kunde.telefon, kunde.epost, GROUP_CONCAT(kontaktperson.fornavn, ' ', kontaktperson.etternavn) AS kontaktpersoner 
-            FROM kunde 
-            LEFT JOIN kontaktperson ON kunde.kundeid = kontaktperson.kunde_id 
-            GROUP BY kunde.kundeid";
+    $sql = "SELECT bedrift.bedriftid, bedrift.bedriftnavn, GROUP_CONCAT(kontaktperson.fornavn, ' ', kontaktperson.etternavn) AS kontaktpersoner 
+        FROM bedrift 
+        LEFT JOIN kontaktperson ON bedrift.bedriftid = kontaktperson.bedrift_id 
+        GROUP BY bedrift.bedriftid";
+
+
     $result = $conn->query($sql);
     
-    $customers = array();
+    $kunder = array();
 
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
-            $customers[] = $row;
+            $kunder[] = $row;
         }
     }
-    return $customers;
+    return $kunder;
 }
 
-// Function to create a new customer
+// Funksjon for å opprette en ny kunde (bedrift)
 function createCustomer($conn, $navn, $telefon, $epost) {
-    $sql = "INSERT INTO kunde (navn, telefon, epost) VALUES ('$navn', '$telefon', '$epost')";
+    $sql = "INSERT INTO bedrift (bedriftnavn, telefon, epost) VALUES ('$navn', '$telefon', '$epost')";
     if ($conn->query($sql) === TRUE) {
         return true;
     } else {
@@ -46,9 +49,9 @@ function createCustomer($conn, $navn, $telefon, $epost) {
     }
 }
 
-// Function to update customer details
+// Funksjon for å oppdatere kundedetaljer
 function updateCustomer($conn, $kundeid, $navn, $telefon, $epost) {
-    $sql = "UPDATE kunde SET navn='$navn', telefon='$telefon', epost='$epost' WHERE kundeid=$kundeid";
+    $sql = "UPDATE bedrift SET bedriftnavn='$navn', telefon='$telefon', epost='$epost' WHERE bedriftid=$kundeid";
     if ($conn->query($sql) === TRUE) {
         return true;
     } else {
@@ -56,9 +59,9 @@ function updateCustomer($conn, $kundeid, $navn, $telefon, $epost) {
     }
 }
 
-// Function to delete a customer
+// Funksjon for å slette en kunde (bedrift)
 function deleteCustomer($conn, $kundeid) {
-    $sql = "DELETE FROM kunde WHERE kundeid=$kundeid";
+    $sql = "DELETE FROM bedrift WHERE bedriftid=$kundeid";
     if ($conn->query($sql) === TRUE) {
         return true;
     } else {
@@ -66,47 +69,40 @@ function deleteCustomer($conn, $kundeid) {
     }
 }
 
-// Get all customers and their contacts from the database
-$customers = getCustomersAndContacts($conn);
+// Hent alle kunder og deres kontakter fra databasen
+$kunder = getCustomersAndContacts($conn);
 
-// Close the database connection
+// Lukk databasetilkoblingen
 $conn->close();
 ?>
-
-
 
     <h2>Kunder og Kontaktpersoner</h2>
     <table border="1">
         <tr>
-            <th>Kunde ID</th>
-            <th>Navn</th>
-            <th>Telefon</th>
-            <th>E-post</th>
+            <th>Bedrift ID</th>
+            <th>Bedriftnavn</th>
             <th>Kontaktpersoner</th>
         </tr>
-        <?php foreach ($customers as $customer): ?>
+        <?php foreach ($kunder as $kunde): ?>
         <tr>
-            <td><?php echo $customer['kundeid']; ?></td>
-            <td><?php echo $customer['navn']; ?></td>
-            <td><?php echo $customer['telefon']; ?></td>
-            <td><?php echo $customer['epost']; ?></td>
-            <td><?php echo $customer['kontaktpersoner']; ?></td>
+            <td><?php echo $kunde['bedriftid']; ?></td>
+            <td><?php echo $kunde['bedriftnavn']; ?></td>
+            <td><?php echo $kunde['kontaktpersoner']; ?></td>
         </tr>
         <?php endforeach; ?>
     </table>
 
-    <h2>Legg til ny kunde</h2>
+    <h2>Legg til ny Bedrift</h2>
     <form action="add_customer.php" method="POST">
         <label for="navn">Navn:</label><br>
         <input type="text" id="navn" name="navn"><br>
-        <label for="telefon">Telefon:</label><br>
-        <input type="text" id="telefon" name="telefon"><br>
-        <label for="epost">E-post:</label><br>
-        <input type="text" id="epost" name="epost"><br><br>
+        <label for="kontaktperson">Kontaktperson:</label><br>
+        <input type="text" id="kontaktperson" name="kontaktperson"><br>
         <input type="submit" value="Legg til kunde">
     </form>
+   
 
-    <!-- Additional forms for updating and deleting customers can be added here -->
+    <!-- Ytterligere skjemaer for å oppdatere og slette kunder kan legges til her -->
 
-
+</body>
 </html>
