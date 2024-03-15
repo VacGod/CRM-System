@@ -104,5 +104,7 @@ $conn->close();
 
     <!-- Ytterligere skjemaer for å oppdatere og slette kunder kan legges til her -->
 
+    
+
 </body>
 </html>
