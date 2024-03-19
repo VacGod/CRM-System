@@ -7,9 +7,8 @@ if (isset($_POST["user"]) && !isset($_SESSION["user"])) {
     
     // Definerer en assosiativ array av brukernavn og passord.
     $users = [
-        "Moe" => "Moelester69",
-        "Sondre" => "HortenMoss59",
-        "Gog" => "Goggis109"
+        "Admin" => "Test123",
+        
     ];
 
     // Sjekker om brukernavnet eksisterer i arrayen, og om passordet er korrekt.
