@@ -13,9 +13,9 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST" || isset($_GET['contact_id'])) {
     // Håndter sletteoperasjon
-    $contact_id = $_POST['contact_id'];
+    $contact_id = ($_SERVER["REQUEST_METHOD"] == "POST") ? $_POST['contact_id'] : $_GET['contact_id'];
 
     $sql = "DELETE FROM kontaktperson WHERE kontaktpersonID=$contact_id";
 
