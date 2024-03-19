@@ -8,5 +8,5 @@ Emma – Kravspesifikasjon, litt programmering
 
 Nikita – ER-modell over database, oversikt over arbeidsfordeling
 
-Liam – Detaljert fremdriftsplan
+Liam – Index og Admin Login page Detaljert fremdriftsplan
 

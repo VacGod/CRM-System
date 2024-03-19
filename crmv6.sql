@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS kontaktperson (
 );
 
 -- Dummy data for bedrift-tabellen
-INSERT INTO bedrift (bedriftnavn, kontaktperson_fornavn, kontaktperson_etternavn) VALUES
+INSERT INTO bedrift (bedriftnavn, fornavn, etternavn) VALUES
 ('Innovative Solutions AS', 'John', 'Doe'),
 ('FutureTech Group', 'Mark', 'Johnson'),
 ('Visionary Concepts Ltd', 'Sarah', 'Williams'),
