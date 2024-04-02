@@ -1,0 +1,25 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    scroll-behavior: smooth;
+}
+body {
+  background-color: aliceblue;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+main {
+  float: left;
+  padding: 16px;
+  float: left;
+  background-color: #FFF;
+  border: 1px solid #000;
+  margin-top: 100px;
+}
+button {
+  margin-top: 10px;
+} 
