@@ -12,7 +12,7 @@ if (!isset($included_header)) {
     <!-- Form for adding a new company -->
     <div class="add-customer-form">
         <h2>Add New Company</h2>
-        <form action="add_customer.php" method="post" id="addCompanyForm">
+        <form action="add_company.php" method="post" id="addCompanyForm">
             <!-- Your form fields for adding a new company -->
         </form>
     </div>
